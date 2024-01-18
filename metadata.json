@@ -1,0 +1,9 @@
+{
+    "name": "Degen OG",
+    "description": "An NFT for OG DEGEN holders",
+    "image": "ipfs://QmbJTHEADhVQ4hBxQStDKHb3FzzofoKmmeEgCGRRyXz2PQ",
+    "attributes": [{
+        "trait_type": "OG",
+        "value": "DEGEN"}]
+}
+  
