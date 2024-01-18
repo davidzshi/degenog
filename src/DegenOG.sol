@@ -32,16 +32,25 @@ contract DegenOG is ERC721, Ownable {
         degenToken = IERC20(_degenTokenAddress);
     }
 
+    mapping(address => uint256) public mintedCount;
+
     function mintTo(address recipient) external payable returns (uint256) {
         if (recipient == address(0)) revert("Recipient cannot be zero address");
         if (msg.value < MINT_PRICE) revert MintPriceNotPaid();
-        if (degenToken.balanceOf(msg.sender) < 1e6 * 10**18) revert InsufficientDEGENBalance();
-        if (balanceOf(msg.sender) > 0) revert NFTAlreadyMinted();
+
+        uint256 degenBalance = degenToken.balanceOf(msg.sender);
+
+        if (degenBalance < 1e6 * 10**18 || degenBalance == 0) revert InsufficientDEGENBalance();
+        if (mintedCount[msg.sender] > 0) revert NFTAlreadyMinted();
 
         uint256 newTokenId = ++currentTokenId;
         if (newTokenId > TOTAL_SUPPLY) revert MaxSupply();
 
         _safeMint(recipient, newTokenId);
+
+        // Increment the mintedCount after a successful mint
+        mintedCount[msg.sender] += 1;
+
         emit Minted(recipient, newTokenId);
 
         return newTokenId;
