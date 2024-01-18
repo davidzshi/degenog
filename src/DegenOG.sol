@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.8.10;
+pragma solidity ^0.8.20;
 
 import "lib/solmate/src/tokens/ERC721.sol";
 import "lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
@@ -54,10 +54,10 @@ contract DegenOG is ERC721, Ownable {
     }
 
     function withdrawPayments(address payable payee) public onlyOwner {
-        if (payee == address(0)) revert("Payee cannot be zero address");
+    if (payee == address(0)) revert("Payee cannot be zero address");
 
-        uint256 balance = address(this).balance;
-        (bool transferTx,) = payee.call{value: balance}("");
-        if (!transferTx) revert WithdrawTransfer();
+    uint256 balance = address(this).balance;
+    payee.transfer(balance);
     }
+
 }
