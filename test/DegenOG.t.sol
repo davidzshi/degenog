@@ -48,24 +48,4 @@ function try_degenOG_mintTo(address recipient) internal returns (bool) {
     return success;
 }
 
-function testCannotMintAfterSendingAllDegenToZero() public {
-    // Send all DegenTokenMock tokens to the 0 address
-    degenToken.transfer(address(0), degenToken.balanceOf(address(this)));
-
-    // Try to mint a new token
-    bool success = try_degenOG_mintTo(msg.sender);
-
-    // Assert that the mint operation failed
-    assertTrue(!success);
-}
-
-// Helper function to attempt to mint a new token and return whether it succeeded
-function try_degenOG_mintTo(address recipient) internal returns (bool) {
-    // We use a low-level call to catch the revert
-    (bool success, ) = address(degenOG).call{value: degenOG.MINT_PRICE()}(
-        abi.encodeWithSignature("mintTo(address)", recipient)
-    );
-    return success;
-}
-
 }

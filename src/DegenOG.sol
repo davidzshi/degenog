@@ -39,7 +39,6 @@ contract DegenOG is ERC721, Ownable {
         if (msg.value < MINT_PRICE) revert MintPriceNotPaid();
 
         uint256 degenBalance = degenToken.balanceOf(msg.sender);
-
         if (degenBalance < 1e6 * 10**18 || degenBalance == 0) revert InsufficientDEGENBalance();
         if (mintedCount[msg.sender] > 0) revert NFTAlreadyMinted();
 
