@@ -34,7 +34,7 @@ contract DegenOG is ERC721, Ownable {
 
     function mintTo(address recipient) external payable returns (uint256) {
         if (recipient == address(0)) revert("Recipient cannot be zero address");
-        if (msg.value != MINT_PRICE) revert MintPriceNotPaid();
+        if (msg.value < MINT_PRICE) revert MintPriceNotPaid();
         if (degenToken.balanceOf(msg.sender) < 1e6 * 10**18) revert InsufficientDEGENBalance();
         if (balanceOf(msg.sender) > 0) revert NFTAlreadyMinted();
 
@@ -53,7 +53,7 @@ contract DegenOG is ERC721, Ownable {
         return baseURI; // Return the common base URI for all tokens
     }
 
-    function withdrawPayments(address payable payee) public onlyOwner {
+    function withdrawPayments(address payable payee) external onlyOwner {
     if (payee == address(0)) revert("Payee cannot be zero address");
 
     uint256 balance = address(this).balance;
